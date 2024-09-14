@@ -1,0 +1,23 @@
+# the run file is always the same
+reset;
+reset options;
+
+model SBAS.mod;
+data SBAS.dat;
+
+option solver gurobi;
+option gurobi_options 'timelimit = 180 outlev 1';
+solve;
+
+display x;
+display total_cost;
+
+# run in console writing " include filename.run"
+
+display covering.slack; # to see the slacks
+
+# Define the file for exporting results
+print "x,total_cost" > results.csv;
+
+# Print variable values and total cost to the file
+print {i in AIRPORTS} x[i], total_cost > results.csv;
